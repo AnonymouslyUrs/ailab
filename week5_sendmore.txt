@@ -1,0 +1,26 @@
+import itertools
+import re
+
+def evaluate(exp):
+  return filter(valid, func(exp))
+
+def func(exp):
+  exp = exp.replace(" = ", " == ")
+  letters = ''.join(set(re.findall("[A-Za-z]", exp)))
+  print(letters)
+  for digits in itertools.permutations("0123456789", len(letters)):
+    yield exp.translate(exp.maketrans(letters, "".join(digits)))
+
+def valid(exp):
+  return not re.findall(r"\b0", exp) and eval(exp) is True
+
+print(list(evaluate(input("Enter exp : "))))
+
+
+
+------------
+input and output
+------------------
+Enter exp : two + two = four
+fwutor
+['928 + 928 == 1856', '734 + 734 == 1468', '836 + 836 == 1672', '938 + 938 == 1876', '846 + 846 == 1692', '765 + 765 == 1530', '867 + 867 == 1734']

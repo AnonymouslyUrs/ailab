@@ -1,0 +1,51 @@
+import numpy as np
+def step(v):
+  if v >= 0:
+    return 1
+  else:
+    return 0
+def perceptronModel(x, w, b):
+  v = np.dot(w, x) + b
+  y = step(v)
+  return y
+def NOT_logic(x):
+  wNOT = -1
+  bNOT = 0.5
+  return perceptronModel(x, wNOT, bNOT)
+def AND_logic(x):
+  w = np.array([1, 1])
+  bAND = -1.5
+  return perceptronModel(x, w, bAND)
+def OR_logic(x):
+  w = np.array([1, 1])
+  bOR = -0.5
+  return perceptronModel(x, w, bOR)
+def XOR_logic(x):
+  y1 = AND_logic(x)
+  y2 = OR_logic(x)
+  y3 = NOT_logic(y1)
+  fx = np.array([y2, y3])
+  op = AND_logic(fx)
+  return op
+test1 = np.array([0, 0])
+test2 = np.array([0, 1])
+test3 = np.array([1, 0])
+test4 = np.array([1, 1])
+print("---------------AND--------------")
+print("AND({}, {}) = {}".format(0, 0, AND_logic(test1)))
+print("AND({}, {}) = {}".format(0, 1, AND_logic(test2)))
+print("AND({}, {}) = {}".format(1, 0, AND_logic(test3)))
+print("AND({}, {}) = {}".format(1, 1, AND_logic(test4)))
+print("---------------OR---------------")
+print("OR({}, {}) = {}".format(0, 0, OR_logic(test1)))
+print("OR({}, {}) = {}".format(0, 1, OR_logic(test2)))
+print("OR({}, {}) = {}".format(1, 0, OR_logic(test3)))
+print("OR({}, {}) = {}".format(1, 1, OR_logic(test4)))
+print("---------------NOT--------------")
+print("NOT({}) = {}".format(0, NOT_logic(0)))
+print("NOT({}) = {}".format(1, NOT_logic(1)))
+print("---------------XOR--------------")
+print("XOR({}, {}) = {}".format(0, 0, XOR_logic(test1)))
+print("XOR({}, {}) = {}".format(0, 1, XOR_logic(test2)))
+print("XOR({}, {}) = {}".format(1, 0, XOR_logic(test3)))
+print("XOR({}, {}) = {}".format(1, 1, XOR_logic(test4)))

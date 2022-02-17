@@ -1,0 +1,38 @@
+import math
+def check():
+  if need>max(j1,j2):
+    return "No"
+  if need % math.gcd(j1,j2)==0:
+    return "Yes"
+  return "No"
+j1,j2=map(int,input("Enter the capacity of Jug 1 and Jug 2: ").split())
+need=int(input("Enter the capacity of water needed: "))
+x,y=map(int,input("Enter intitial states of jugs respectively : ").split())
+if check()=="No":
+  print("Problem can't be solved")
+else:
+  while x!=need and y!=need:
+    if x==0:
+      x=j1
+    elif x>0 and y!=j2:
+      while x!=0 and y!=j2:
+        x,y=x-1,y+1
+    elif x>0 and y==j2:
+      y=0
+    print("JUG1:",x,"JUG2:",y)
+
+  if x==need:
+    print("JUG1 Contains the needed quantity")
+  else:
+    print("JUG2 Contains the needed quantity")
+
+
+
+----input and output-----
+Enter the capacity of Jug 1 and Jug 2: 5 6
+Enter the capacity of water needed: 4
+Enter intitial states of jugs respectively : 2 3
+JUG1: 0 JUG2: 5
+JUG1: 5 JUG2: 5
+JUG1: 4 JUG2: 6
+JUG1 Contains the needed quantity

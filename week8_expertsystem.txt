@@ -1,0 +1,68 @@
+import re
+
+
+# Knowledge base
+# facts related to blood glucose level
+# glycemia - Blood glucose level
+glycemia_facts = ["glycemia(90, 110) => status(normal)", 
+         "glycemia(125, 200) => status(high)", 
+         "glycemia(0, 70) => status(low)",]
+
+# facts related to diabetes
+diabetes_facts = ["symptom_count(0, 4) and status(high) => diabetes(Moderate, Likely to get affected)",
+                  "symptom_count(0, 4) and status(low) => diabetes(Moderate, Likely to get afftected)",
+                  "symptom_count(0, 12) and status(normal) => diabetes(Low, May have other health issues)",
+                  "symptom_count(4, 12) and status(high) => diabetes(High, Affected - HyperGlycemia)",
+                  "symptom_count(4, 12) and status(low) => diabetes(High, Affected - HypoGlycemia)",
+                  "symptom_count(0, 4) and status(likely) => diabetes(Low)",
+                  "symptom_count(4, 12) and status(likely) => diabetes(Moderate, May affect)"]
+
+# Knowledge engine
+
+def diabetes(age, glycemia, symptoms):
+  status = "likely"
+
+  if age < 0 or age > 5:
+    print("Inappropriate age. This ES is related to Infant's diabetic condtions.")
+    return
+  
+  # for the given glycemia, based on the glycemia facts getting that respective status
+  for fact in glycemia_facts:
+    # getting the glycemia level
+    array = list(map(int, re.findall(r'[0-9]+', fact)))
+    if glycemia >= array[0] and glycemia <= array[1]:
+      status = re.findall(r'status\([A-Za-z]*', fact)[0][7:]
+      print("Infant's glycemia:", status)
+      break
+  count = symptoms.count("T")
+
+  # based on the symptom count and status of the infant deciding the diabetes status
+  for fact in diabetes_facts:
+    # getting count level
+    array = list(map(int, re.findall(r'[0-9]+', fact)))
+    # actual status mentioned in that particular fact
+    curr_status = re.findall(r'status\([a-zA-Z]*', fact)[0][7:] 
+    # respective diabetes status
+    d_status = re.findall(r'diabetes\([a-zA-Z, -]*', fact)[0][9:]
+    if count >= array[0] and count <= array[1] and status == curr_status:
+      print("Diabetes status:", d_status)
+      break
+
+age = int(input("Enter infant's age: "))
+glycemia_level = int(input("Enter glycemia level(Blood sugar level): "))
+print("Symptoms:\n1. Shakiness 2. Hunger 3. Sweating 4. Headache 5. Diabetic_parent 6. Pale 7. Urination 8. Thirst 9. Blurred_vision 10. Dry_mouth 11. Smelling_breath 12. Shortness_of_breath")
+symptoms = list(map(str, input("Enter status of each symptom True/False: ").split(" ")))[:12]
+diabetes(age, glycemia_level, symptoms)
+
+
+----------------------------
+INPUT AND OUTPUT
+-------------------------
+Enter infant's age: 3
+Enter glycemia level(Blood sugar level): 70
+Symptoms:
+1. Shakiness 2. Hunger 3. Sweating 4. Headache 5. Diabetic_parent 6. Pale 7. Urination 8. Thirst 9. Blurred_vision 10. Dry_mouth 11. Smelling_breath 12. Shortness_of_breath
+Enter status of each symptom True/False: T T F T T F F T F F F F
+Infant's glycemia: low
+Diabetes status: High, Affected - HypoGlycemia
+-------------------------------------------------------

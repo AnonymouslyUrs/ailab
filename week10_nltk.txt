@@ -1,0 +1,22 @@
+#EXTRACT ALL THE WORDS WITH AND WITHOUT PUNCTUATIONS FROM A GIVEN INPUT SENTENCE  
+import nltk
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('stopwords')
+from nltk.corpus import stopwords
+sentence=input()
+words=nltk.word_tokenize(sentence)
+print("All the Words present in Sentence along with Punctuations : ")
+print(words)
+new_words=[i for i in words if i.isalpha()]
+print("\nAll the Words present in Sentence without Punctuations : ")
+print(new_words)
+tag=nltk.pos_tag(words)
+print(tag)
+tag=nltk.pos_tag(new_words)
+print("Parts of speech for the words in sentence : ")
+print(tag)
+stop_words = set(stopwords.words('english'))
+after_remove=[w for w in words if not w in stop_words]
+print("After removal of stopwords : ")
+print(after_remove)
