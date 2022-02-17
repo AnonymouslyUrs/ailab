@@ -1,0 +1,40 @@
+n=int(input("Enter number of rooms: "))
+l = list(map(int,input("Enter 1 for dust, 0 for clean: ").split()))
+cost=0
+visited=[False]*n
+vac=int(input("Enter the number where vaccum cleaner is present: "))
+print("---------------------------------------")
+vac-=1
+def clean():
+  global vac,cost
+  if sum(l)==0:
+    print("all rooms are clean, cost is:", cost)
+    return
+  else:   
+    if visited[vac]==False:
+      visited[vac]=True
+      if l[vac]==1:
+        cost+=1
+        print(f"The room {vac+1} is dirty, cleaning it, cost is",cost)
+        l[vac]=0
+      elif l[vac]==0:
+        print(f"The room is clean.")
+        
+    if vac<n-1:
+      if visited[vac+1]==True:
+        vac-=1
+        if vac>=0:
+          cost+=1
+          print(f"Moving to room {vac+1}, cost is",cost)  
+      else:
+        vac+=1
+        cost+=1
+        print(f"Moving to room {vac+1}, cost is",cost)  
+      clean()
+    elif vac==n-1 and sum(l)!=0:
+      vac-=1
+      cost+=1
+      print(f"Moving to room {vac+1}, cost is",cost)  
+      clean()
+
+clean()
